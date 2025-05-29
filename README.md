@@ -1,2 +1,5 @@
 # ByteStream.js
-Simple class to make reading/writing byte streams easy
+
+Simple but versatile class to make reading, writing and parsing binary data easy
+
+**in progress**
