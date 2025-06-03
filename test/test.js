@@ -1,22 +1,22 @@
-# ByteStream.js
+"use strict";
 
-Simple but versatile class to make reading, writing and parsing binary data easy
+const ByteStream = ("undefined" !== typeof window) && (window.ByteStream) ? window.ByteStream : require('../src/ByteStream.js');
 
-**version 1.0.0 in progress**
-
-
-Example
-
-```js
 const stream = new ByteStream();
 
 (async function writer() {
     // can write to byte stream
     const writestream = new ByteStream();
     writestream.writeInt(-512, 'int16', 'BE');
+    writestream.writeInt(-512, 'int16', 'LE');
+    console.log(await writestream.readInt('int16', 'BE'), -512);
+    console.log(await writestream.readInt('int16', 'LE'), -512);
+    console.log(writestream.bytes());
+    writestream.clear();
+    writestream.writeInt(-512, 'int16', 'BE');
     writestream.writeInt(262, 'int16', 'BE');
     writestream.writeUtf8(String.fromCodePoint(0x1f303));
-    return writestream.bytes();
+    return writestream.bytes();//"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 })().then(function(data) {
     function reader()
     {
@@ -48,4 +48,3 @@ const stream = new ByteStream();
     console.log(await stream.readInt('int16', 'BE'), 262);
     console.log(await stream.readUtf8(1), String.fromCodePoint(0x1f303));
 })().then(() => {console.log('--EOF--')});
-```
